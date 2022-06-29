@@ -1,0 +1,57 @@
+import React, { useState } from "react";
+import Todoitem  from "./Todoitem";
+
+function App() {
+  const [state, setstate] = useState("");
+
+  const [item, setitem] = useState([]);
+
+  function handlechange(event) {
+    setstate(event.target.value);
+  }
+
+  function additem() {
+    setitem((prevvalue) => {
+      return [...prevvalue, state];
+    });
+    setstate("");
+  }
+
+  function deleteitems() {
+    setitem([]);
+  }
+
+  function deleteitem(id) {
+    setitem((prevItems) => {
+      return prevItems.filter((item, index) => {
+        return index !== id;
+      });
+    });
+  }
+
+  return (
+    <div className="container">
+      <div className="heading">
+        <h1>To-Do List</h1>
+      </div>
+      <div className="form">
+        <input onChange={handlechange} type="text" value={state} />
+        <br /><button onClick={additem}>
+          <span>Add</span>
+        </button>
+        <button onClick={deleteitems}>
+          <span>Delete all</span>
+        </button>
+      </div>
+      <div>
+        <ul>
+          {item.map((todo,index) => (
+            <Todoitem key={index} id={index} text={todo} onChecked={deleteitem} />
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default App;
